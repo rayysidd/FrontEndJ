@@ -35,7 +35,7 @@ const SportsNews = () => {
   };
 
   return (
-    <div>
+    <div className="sports-news">
       <h1>Latest Sports News</h1>
 
       {loading && <p>Loading news...</p>}
@@ -48,10 +48,12 @@ const SportsNews = () => {
               <li key={index}>
                 <h3>{article.title}</h3>
                 <p>{article.description}</p>
-                <a href={article.url} target="_blank" rel="noopener noreferrer">
+                <a href={article.url} target="_blank" rel="noopener noreferrer" className="read-more">
                   Read more
                 </a>
-                <button onClick={() => saveArticle(article)}>Save</button>
+                <button onClick={() => saveArticle(article)} className="save-btn">
+                  Save
+                </button>
                 <hr />
               </li>
             ))}

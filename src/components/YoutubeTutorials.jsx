@@ -47,7 +47,7 @@ const YouTubeTutorials = () => {
   }, []);
 
   return (
-    <div>
+    <div className="youtube-tutorials">
       <h2>Sports Tutorials on YouTube</h2>
       <form onSubmit={handleSearchSubmit}>
         <input
@@ -59,38 +59,53 @@ const YouTubeTutorials = () => {
         <button type="submit">Search</button>
       </form>
 
-      <ul>
-        {videos.map((video) => (
-          <li key={video.id.videoId}>
-            <a href={`https://www.youtube.com/watch?v=${video.id.videoId}`} target="_blank" rel="noopener noreferrer">
-              <img
-                src={video.snippet.thumbnails.medium.url}
-                alt={video.snippet.title}
-                style={{ width: "120px", height: "90px", marginRight: "10px" }}
-              />
-              {video.snippet.title}
-            </a>
-            <button onClick={() => toggleFavorite(video.id.videoId)}>
-              {favorites.includes(video.id.videoId) ? "Remove from Favorites" : "Add to Favorites"}
-            </button>
-          </li>
-        ))}
-      </ul>
-
-      <h3>Favorites</h3>
-      <ul>
-        {favorites.length > 0 ? (
-          favorites.map((id) => (
-            <li key={id}>
-              <a href={`https://www.youtube.com/watch?v=${id}`} target="_blank" rel="noopener noreferrer">
-                Watch Favorite
+      <div className="cards-container">
+        <h3>Search Results</h3>
+        <div className="card-grid">
+          {videos.map((video) => (
+            <div key={video.id.videoId} className="card">
+              <a href={`https://www.youtube.com/watch?v=${video.id.videoId}`} target="_blank" rel="noopener noreferrer">
+                <img
+                  src={video.snippet.thumbnails.medium.url}
+                  alt={video.snippet.title}
+                  className="card-image"
+                />
+                <div className="card-content">
+                  <h4>{video.snippet.title}</h4>
+                </div>
               </a>
-            </li>
-          ))
-        ) : (
-          <p>No favorite videos yet.</p>
-        )}
-      </ul>
+              <button onClick={() => toggleFavorite(video.id.videoId)} className="favorite-btn">
+                {favorites.includes(video.id.videoId) ? "Remove from Favorites" : "Add to Favorites"}
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Favorites Section at the bottom */}
+      <div className="favorites-container">
+        <h3>Favorites</h3>
+        <div className="card-grid">
+          {favorites.length > 0 ? (
+            favorites.map((id) => (
+              <div key={id} className="card">
+                <a href={`https://www.youtube.com/watch?v=${id}`} target="_blank" rel="noopener noreferrer">
+                  <img
+                    src={`https://img.youtube.com/vi/${id}/mqdefault.jpg`}
+                    alt={`Video ${id}`}
+                    className="card-image"
+                  />
+                  <div className="card-content">
+                    <h4>Watch Favorite</h4>
+                  </div>
+                </a>
+              </div>
+            ))
+          ) : (
+            <p>No favorite videos yet.</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
