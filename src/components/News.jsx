@@ -1,32 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const SportsNews = () => {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
-  // NewsAPI key and endpoint
-  const apiKey = '0c3ef78d2481450f805528654d7028fe'; // Your API key
-  const endpoint = `https://newsapi.org/v2/everything?q=sports&apiKey=0c3ef78d2481450f805528654d7028fe`;
+  const apiKey = "0c3ef78d2481450f805528654d7028fe";
+  const endpoint = `https://newsapi.org/v2/everything?q=sports&apiKey=${apiKey}`;
 
-  // Fetch sports news on component mount
   useEffect(() => {
     const fetchSportsNews = async () => {
       setLoading(true);
-      setError('');
+      setError("");
       try {
         const response = await axios.get(endpoint);
         setNews(response.data.articles);
       } catch (err) {
-        setError('Failed to fetch sports news');
+        setError("Failed to fetch sports news");
       } finally {
         setLoading(false);
       }
     };
 
     fetchSportsNews();
-  }, []); // Empty dependency array ensures it only runs once when the component mounts
+  }, []);
+
+  const saveArticle = (article) => {
+    const savedArticles = JSON.parse(localStorage.getItem("savedNews")) || [];
+    if (!savedArticles.some((a) => a.url === article.url)) {
+      savedArticles.push(article);
+      localStorage.setItem("savedNews", JSON.stringify(savedArticles));
+    }
+  };
 
   return (
     <div>
@@ -42,7 +48,10 @@ const SportsNews = () => {
               <li key={index}>
                 <h3>{article.title}</h3>
                 <p>{article.description}</p>
-                <a href={article.url} target="_blank" rel="noopener noreferrer">Read more</a>
+                <a href={article.url} target="_blank" rel="noopener noreferrer">
+                  Read more
+                </a>
+                <button onClick={() => saveArticle(article)}>Save</button>
                 <hr />
               </li>
             ))}
